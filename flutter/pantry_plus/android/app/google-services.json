@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "920108697886",
+    "project_id": "pantry-plus",
+    "storage_bucket": "pantry-plus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920108697886:android:328df49ea3c6021cac610f",
+        "android_client_info": {
+          "package_name": "com.example.pantry_plus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUA2EXT4IQQjFx5VHVMknpEtlYZVlCNrA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
