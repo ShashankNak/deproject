@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:pantry_plus/api/authapi/auth_api.dart';
+import 'package:pantry_plus/controller/firebase/firebase_database.dart';
+import 'package:pantry_plus/data/model/user_details_model.dart';
 import 'package:pantry_plus/screens/pages/home/home_screen.dart';
 import 'package:pantry_plus/utils/const.dart';
 
@@ -16,6 +19,8 @@ class AuthController extends GetxController {
       (TextEditingController()).obs; //controller for confirm password
 
   var isLoading = (false).obs;
+
+  final AuthApi auth = AuthApi();
 
   //togglling between new or old user
   void toggleUser() {
@@ -33,6 +38,43 @@ class AuthController extends GetxController {
   toggleCPass() {
     isCPassObscure(!isCPassObscure.value);
     update();
+  }
+
+  Future<void> signInWithGoogle() async {
+    isLoading(true);
+    update();
+    final logged = await auth.signInWithGoogle();
+    final isAlreadyExist = await auth.checkUserSignedIn();
+
+    //logic for storing the user on firestore database
+    if (logged && !isAlreadyExist) {
+      log("new User");
+      final user = UserDetailsModel(
+          mId: "",
+          fId: auth.me!.uid,
+          name: auth.me!.displayName ?? "",
+          email: auth.me!.email ?? "",
+          imageUrl: auth.me!.photoURL ?? "",
+          birthdate: "",
+          gender: Gender.none,
+          height: "",
+          weight: "",
+          preference: "");
+      await FirebaseDatabase.storeUserDetails(user);
+    }
+
+    isLoading(false);
+    update();
+    if (!logged) {
+      Get.snackbar("User Not Signed IN", "Try Again later");
+      return;
+    }
+
+    Get.offUntil(
+        GetPageRoute(
+            page: () => const HomeScreen(),
+            transition: Transition.rightToLeftWithFade),
+        (route) => false);
   }
 
   //email and password validation

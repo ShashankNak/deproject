@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:920108697886:ios:2e2c483920aaf8c9ac610f",
-  "FIREBASE_PROJECT_ID": "pantry-plus",
-  "GCM_SENDER_ID": "920108697886"
+  "GOOGLE_APP_ID": "1:578736755425:ios:0a2c5ca0858c0d62941da0",
+  "FIREBASE_PROJECT_ID": "pantry-plus-deproject",
+  "GCM_SENDER_ID": "578736755425"
 }

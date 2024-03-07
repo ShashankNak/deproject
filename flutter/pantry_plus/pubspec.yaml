@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.2.3 <4.0.0'
+  sdk: '>=3.3.0 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -42,6 +42,21 @@ dependencies:
   line_icons: ^2.0.3
   firebase_auth: ^4.16.0
   firebase_core: ^2.24.2
+  flutter_speed_dial: ^7.0.0
+  mobile_scanner: ^4.0.0
+  http: ^1.2.0
+  html: ^0.15.4
+  image_picker: ^1.0.7
+  flutter_image_compress: ^2.1.0
+  google_sign_in: ^6.2.1
+  cloud_firestore: ^4.14.0
+  sign_in_with_apple: ^6.0.0
+  cached_network_image: ^3.3.1
+  multi_dropdown: ^2.1.4
+  intl: ^0.19.0
+  loading_animation_widget: ^1.2.0+4
+  firebase_storage: ^11.6.0
+  firebase_app_check: ^0.2.1+8
 
 dev_dependencies:
   flutter_test:
@@ -52,7 +67,8 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.1
+  flutter_lints: ^3.0.0
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -71,6 +87,8 @@ flutter:
     - assets/images/img2.png
     - assets/images/googleimg.png
     - assets/images/profile.jpeg
+    - assets/images/gallery.png
+    - assets/images/camera.png
 
     # dummy
     - assets/recipe_images/asparagus.jpg
@@ -83,7 +101,6 @@ flutter:
     - assets/recipe_images/souffle.jpg
     - assets/recipe_images/spaghetti.jpg
     - assets/recipe_images/toast.jpg
-  #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

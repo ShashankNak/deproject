@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+const String gallery = 'assets/images/gallery.png';
+const String camera = 'assets/images/camera.png';
+
 void constSnackBar({String? title, String? message}) {
   Get.snackbar("", "",
       titleText: title != null

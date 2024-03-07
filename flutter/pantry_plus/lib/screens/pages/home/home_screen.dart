@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pantry_plus/controller/home/home_controller.dart';
@@ -21,13 +19,15 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context) {
           return Scaffold(
             bottomNavigationBar: const CustomBottomBar(),
-            body: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 1000),
-              child: controller.pages[controller.selectedPage.value],
-            ),
-            floatingActionButton: FloatingActionButton.small(
-              onPressed: () => FirebaseAuth.instance.signOut(),
-              child: const Icon(Icons.add),
+            body: Stack(
+              children: [
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 1000),
+                  child: controller.pages[controller.selectedPage.value],
+                ),
+                if (controller.isLoading.value)
+                  const Center(child: CircularProgressIndicator())
+              ],
             ),
           );
         });

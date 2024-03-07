@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDUA2EXT4IQQjFx5VHVMknpEtlYZVlCNrA',
-    appId: '1:920108697886:android:328df49ea3c6021cac610f',
-    messagingSenderId: '920108697886',
-    projectId: 'pantry-plus',
-    storageBucket: 'pantry-plus.appspot.com',
+    apiKey: 'AIzaSyBjjp3CZJtyfURoYyuCzJtHhqM55xhtzjs',
+    appId: '1:578736755425:android:fae56ed249676ac2941da0',
+    messagingSenderId: '578736755425',
+    projectId: 'pantry-plus-deproject',
+    storageBucket: 'pantry-plus-deproject.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBvNT3qLMu1HOuTqR8VmmB4IvePEs4c0f8',
-    appId: '1:920108697886:ios:2e2c483920aaf8c9ac610f',
-    messagingSenderId: '920108697886',
-    projectId: 'pantry-plus',
-    storageBucket: 'pantry-plus.appspot.com',
+    apiKey: 'AIzaSyB8w0fKogmKPBBte5sMIHMgMU5HBCqQfIc',
+    appId: '1:578736755425:ios:0a2c5ca0858c0d62941da0',
+    messagingSenderId: '578736755425',
+    projectId: 'pantry-plus-deproject',
+    storageBucket: 'pantry-plus-deproject.appspot.com',
     iosBundleId: 'com.example.pantryPlus',
   );
 }

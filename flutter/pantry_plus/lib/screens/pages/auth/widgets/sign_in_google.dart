@@ -17,7 +17,9 @@ class SignInGoogle extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             backgroundColor: Colors.white,
             fixedSize: Size(size.width / 1.2, size.height / 15)),
-        onPressed: controller.isLoading.value ? () {} : () {},
+        onPressed: controller.isLoading.value
+            ? () {}
+            : () => controller.signInWithGoogle(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

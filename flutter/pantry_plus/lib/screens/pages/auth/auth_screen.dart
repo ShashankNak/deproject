@@ -17,7 +17,7 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final controller = Get.put(AuthController());
+    final controller = Get.find<AuthController>();
 
     return GestureDetector(
       onTap: () {
@@ -40,81 +40,104 @@ class AuthScreen extends StatelessWidget {
                           },
                     child: const Icon(Icons.arrow_back),
                   ),
-                  body: Container(
-                    alignment: Alignment.center,
-                    child: Card(
-                      elevation: 4,
-                      surfaceTintColor: Colors.amber,
-                      margin: const EdgeInsets.all(30),
-                      color: customColorScheme(Get.context!).primary,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.contain,
-                            alignment: Alignment.center,
-                            opacity: 0.2,
-                            image: AssetImage(
-                              "assets/images/img1.png",
-                            ),
+                  body: Stack(
+                    children: [
+                      Container(
+                        width: Get.size.shortestSide,
+                        height: Get.size.longestSide,
+                        decoration: BoxDecoration(
+                          gradient: RadialGradient(
+                            radius: 1,
+                            transform: const GradientRotation(0.7),
+                            focal: Alignment.center,
+                            center: Alignment.topLeft,
+                            focalRadius: 2,
+                            colors: [
+                              Get.theme.colorScheme.secondary,
+                              Get.theme.colorScheme.secondary,
+                              Get.theme.colorScheme.secondary,
+                              Get.theme.colorScheme.background,
+                            ],
                           ),
                         ),
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding: EdgeInsets.all(size.width / 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: size.height / 40,
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Card(
+                          elevation: 4,
+                          surfaceTintColor: Colors.amber,
+                          margin: const EdgeInsets.all(30),
+                          color: customColorScheme(Get.context!).primary,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.contain,
+                                alignment: Alignment.center,
+                                opacity: 0.2,
+                                image: AssetImage(
+                                  "assets/images/img1.png",
                                 ),
-                                Text(
-                                  controller.isNewUser.value
-                                      ? "Welcome New Pal!"
-                                      : "Welcome Back!",
-                                  style: customTextTheme(Get.context!)
-                                      .bodyLarge!
-                                      .copyWith(fontSize: size.width / 14),
+                              ),
+                            ),
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: EdgeInsets.all(size.width / 20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: size.height / 40,
+                                    ),
+                                    Text(
+                                      controller.isNewUser.value
+                                          ? "Welcome New Pal!"
+                                          : "Welcome Back!",
+                                      style: customTextTheme(Get.context!)
+                                          .bodyLarge!
+                                          .copyWith(fontSize: size.width / 14),
+                                    ),
+                                    SizedBox(
+                                      height: size.height / 80,
+                                    ),
+                                    const TextFieldEmail(),
+                                    SizedBox(
+                                      height: size.height / 80,
+                                    ),
+                                    const TextFieldPass(),
+                                    SizedBox(
+                                      height: size.height / 80,
+                                    ),
+                                    if (controller.isNewUser.value)
+                                      const TextFieldConfirmPass(),
+                                    if (controller.isNewUser.value)
+                                      SizedBox(
+                                        height: size.height / 80,
+                                      ),
+                                    const RegisterOrSignIn(),
+                                    const SignInButton(),
+                                    SizedBox(
+                                      height: size.height / 90,
+                                    ),
+                                    Text(
+                                      "or",
+                                      style: customTextTheme(Get.context!)
+                                          .bodyLarge!
+                                          .copyWith(
+                                              color: Colors.black,
+                                              fontSize: size.width / 20),
+                                    ),
+                                    SizedBox(
+                                      height: size.height / 90,
+                                    ),
+                                    const SignInGoogle(),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: size.height / 80,
-                                ),
-                                const TextFieldEmail(),
-                                SizedBox(
-                                  height: size.height / 80,
-                                ),
-                                const TextFieldPass(),
-                                SizedBox(
-                                  height: size.height / 80,
-                                ),
-                                if (controller.isNewUser.value)
-                                  const TextFieldConfirmPass(),
-                                if (controller.isNewUser.value)
-                                  SizedBox(
-                                    height: size.height / 80,
-                                  ),
-                                const RegisterOrSignIn(),
-                                const SignInButton(),
-                                SizedBox(
-                                  height: size.height / 90,
-                                ),
-                                Text(
-                                  "or",
-                                  style: customTextTheme(Get.context!)
-                                      .bodyLarge!
-                                      .copyWith(
-                                          color: Colors.black,
-                                          fontSize: size.width / 20),
-                                ),
-                                SizedBox(
-                                  height: size.height / 90,
-                                ),
-                                const SignInGoogle(),
-                              ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
                 if (controller.isLoading.value) customLoadingIndicator()
