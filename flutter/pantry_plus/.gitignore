@@ -16,8 +16,6 @@ migrate_working_dir/
 *.iws
 .idea/
 
-# api keys
-lib
 
 
 # The .vscode folder contains launch configuration and tasks you configure in
