@@ -17,7 +17,7 @@ migrate_working_dir/
 .idea/
 
 # api keys
-.lib/api/gemini/secret.json
+*.lib/api/gemini/
 
 
 # The .vscode folder contains launch configuration and tasks you configure in
