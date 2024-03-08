@@ -11,10 +11,11 @@ class AuthApi {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  User? me;
-
   Future<bool> checkUserSignedIn() async {
-    final value = await firestore.collection("users").doc(me!.uid).get();
+    final value = await firestore
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
     if (value.exists) {
       log("User already exists");
       return true;
@@ -24,13 +25,14 @@ class AuthApi {
     }
   }
 
-  Future<bool> signInWithGoogle() async {
+  Future<User?> signInWithGoogle() async {
+    FirebaseFirestore.instance.clearPersistence();
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleSignInAccount =
           await googleSignIn.signIn();
       if (googleSignInAccount == null) {
-        return false;
+        return null;
       }
       log("message");
 
@@ -45,15 +47,11 @@ class AuthApi {
       UserCredential userCredential =
           await firebaseAuth.signInWithCredential(credential);
 
-      me = userCredential.user!;
-      if (me == null) {
-        log("UserCrendials not stored!");
-      }
       log("Successfull login");
-      return true;
+      return userCredential.user!;
     } catch (e) {
       log("Error during Google sign-in: $e");
-      return false;
+      return null;
     }
   }
 

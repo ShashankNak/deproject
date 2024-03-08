@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
+import 'package:pantry_plus/controller/home/kitchen/kitchen_controller.dart';
 import 'package:pantry_plus/screens/pages/home/kitchen/barcode_scanning.dart';
-import 'package:pantry_plus/screens/pages/home/kitchen/components/bottom_sheet/modal_bottom_sheet.dart';
 import '../../../../../utils/Theme/colors.dart';
 
 class CustomEFAB extends StatelessWidget {
@@ -10,6 +10,7 @@ class CustomEFAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final KitchenController controller = Get.find<KitchenController>();
     return Positioned(
         right: 10,
         bottom: 20,
@@ -38,10 +39,7 @@ class CustomEFAB extends StatelessWidget {
               child: const Icon(Icons.camera),
               label: 'Scan Raw Item',
               backgroundColor: CUSTOM_COLOR2,
-              onTap: () {
-                // handle the press
-                showCustomBottomSheet(context);
-              },
+              onTap: controller.showBottomSheetForImage,
             ),
           ],
         ));

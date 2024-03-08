@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:pantry_plus/api/authapi/auth_api.dart';
-import 'package:pantry_plus/controller/firebase/firebase_database.dart';
+import 'package:pantry_plus/api/firebase/firebase_database.dart';
 import 'package:pantry_plus/data/model/user_details_model.dart';
 import 'package:pantry_plus/screens/pages/home/home_screen.dart';
 import 'package:pantry_plus/utils/const.dart';
@@ -47,14 +47,14 @@ class AuthController extends GetxController {
     final isAlreadyExist = await auth.checkUserSignedIn();
 
     //logic for storing the user on firestore database
-    if (logged && !isAlreadyExist) {
+    if (logged != null && !isAlreadyExist) {
       log("new User");
       final user = UserDetailsModel(
           mId: "",
-          fId: auth.me!.uid,
-          name: auth.me!.displayName ?? "",
-          email: auth.me!.email ?? "",
-          imageUrl: auth.me!.photoURL ?? "",
+          fId: logged.uid,
+          name: logged.displayName ?? "",
+          email: logged.email ?? "",
+          imageUrl: logged.photoURL ?? "",
           birthdate: "",
           gender: Gender.none,
           height: "",
@@ -65,7 +65,7 @@ class AuthController extends GetxController {
 
     isLoading(false);
     update();
-    if (!logged) {
+    if (logged == null) {
       Get.snackbar("User Not Signed IN", "Try Again later");
       return;
     }
@@ -154,7 +154,22 @@ class AuthController extends GetxController {
         emailController.value.clear();
         passController.value.clear();
         cPassController.value.clear();
+
+        log("new User");
+        final user = UserDetailsModel(
+            mId: "",
+            fId: userCredentials.user!.uid,
+            name: "",
+            email: userCredentials.user!.email ?? "",
+            imageUrl: "",
+            birthdate: "",
+            gender: Gender.none,
+            height: "",
+            weight: "",
+            preference: "");
+        await FirebaseDatabase.storeUserDetails(user);
         update();
+
         Get.offUntil(
             GetPageRoute(
                 page: () => const HomeScreen(),

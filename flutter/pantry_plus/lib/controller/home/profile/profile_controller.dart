@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:pantry_plus/controller/firebase/firebase_database.dart';
+import 'package:pantry_plus/api/firebase/firebase_database.dart';
 import 'package:pantry_plus/data/model/user_details_model.dart';
 import 'package:intl/intl.dart';
 

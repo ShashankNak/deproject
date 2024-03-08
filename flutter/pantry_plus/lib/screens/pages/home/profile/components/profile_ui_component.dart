@@ -81,7 +81,8 @@ class ProfileUIComponent extends StatelessWidget {
                                 Radius.circular(Get.size.width / 2)),
                             child: controller.newImage.value ==
                                         controller.user.value.imageUrl ||
-                                    controller.user.value.imageUrl == ""
+                                    (controller.user.value.imageUrl == "" &&
+                                        controller.newImage.value == "")
                                 ? CachedNetworkImage(
                                     imageUrl: controller.user.value.imageUrl,
                                     height: Get.size.width / 2,
