@@ -92,7 +92,7 @@ flutter:
     - assets/images/profile.jpeg
     - assets/images/gallery.png
     - assets/images/camera.png
-    - lib/api/gemini/secret.json
+    - assets/keys/secret.json
 
     # dummy
     - assets/recipe_images/asparagus.jpg

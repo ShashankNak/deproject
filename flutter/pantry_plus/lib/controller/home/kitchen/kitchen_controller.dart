@@ -104,7 +104,7 @@ class KitchenController extends GetxController {
 
   Future<void> setApiKey() async {
     final key =
-        await SecretLoader(secretPath: "lib/api/gemini/secret.json").load();
+        await SecretLoader(secretPath: "assets/keys/secret.json").load();
     log(key.apikey);
     Gemini.init(apiKey: key.apikey, enableDebugging: true);
   }
