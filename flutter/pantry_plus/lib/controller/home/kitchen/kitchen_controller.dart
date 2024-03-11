@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pantry_plus/api/gemini/key.dart';
 import 'package:pantry_plus/api/web_crawler.dart';
+import 'package:pantry_plus/data/model/item_model.dart';
 
 import '../../../api/gemini/gemini_api.dart';
 
@@ -14,6 +15,18 @@ class KitchenController extends GetxController {
   var result = ("").obs;
   RxList<String> titles = <String>[].obs;
   var isLoading = false.obs;
+
+  var newItem = ItemModel(
+    itemId: "",
+    itemName: "",
+    description: "",
+    itemKeywords: [],
+    itemImage: "",
+    itemCategory: Category.fruits_vegetables,
+    quantity: "",
+    quantityType: Quantity.kg,
+    expiryDate: "",
+  ).obs;
 
   @override
   void onInit() {
@@ -38,44 +51,26 @@ class KitchenController extends GetxController {
     }
   }
 
-  List<Widget> tabs = [
-    const Tab(
-      child: Text("Fridge"),
-    ),
-    const Tab(
-      child: Text("Pantry"),
-    ),
-    const Tab(
-      child: Text("Freezer"),
-    ),
-    const Tab(
-      child: Text("Spices"),
-    ),
-    const Tab(
-      child: Text("Beverages"),
-    ),
-    const Tab(
-      child: Text("Other"),
-    ),
-    const Tab(
-      icon: Icon(Icons.add),
-    ),
-  ];
+  List<Widget> tabs = List.generate(
+      Category.values.length,
+      (index) => Tab(
+            text: Category.values[index].toString().split(".").last.capitalize!,
+          ));
 
   //for picking and compressing image
-  void imagePicker(ImageSource source) async {
+  Future<String> imagePicker(ImageSource source) async {
     final ImagePicker picker = ImagePicker();
     final XFile? photo = await picker.pickImage(source: source);
     if (photo != null) {
       log("image path: ${photo.path}");
       log("image size: ${await photo.length()}");
-      getGeminiResponse(photo.path);
+      return photo.path;
     }
-    return;
+    return "";
   }
 
-  void showBottomSheetForImage() {
-    Get.bottomSheet(
+  Future<String> showBottomSheetForImage() async {
+    String photo = await Get.bottomSheet(
       Container(
         color: Get.theme.colorScheme.primary,
         child: Wrap(
@@ -83,23 +78,24 @@ class KitchenController extends GetxController {
             ListTile(
               leading: const Icon(Icons.photo_library),
               title: const Text('Photo Library'),
-              onTap: () {
-                imagePicker(ImageSource.gallery);
-                Get.back();
+              onTap: () async {
+                final pic = await imagePicker(ImageSource.gallery);
+                Get.back(result: pic);
               },
             ),
             ListTile(
               leading: const Icon(Icons.photo_camera),
               title: const Text('Camera'),
-              onTap: () {
-                imagePicker(ImageSource.camera);
-                Get.back();
+              onTap: () async {
+                final pic = await imagePicker(ImageSource.camera);
+                Get.back(result: pic);
               },
             ),
           ],
         ),
       ),
     );
+    return photo;
   }
 
   Future<void> setApiKey() async {
@@ -109,7 +105,8 @@ class KitchenController extends GetxController {
     Gemini.init(apiKey: key.apikey, enableDebugging: true);
   }
 
-  void getGeminiResponse(String img) async {
+  void getGeminiResponse() async {
+    final img = await showBottomSheetForImage();
     final value = await GeminiApi.getGeminiResponse(img);
     log(value);
   }

@@ -15,13 +15,13 @@ import 'package:pantry_plus/screens/pages/start_screen/start_screen.dart';
 class HomeController extends GetxController {
   var selectedPage = (0).obs; //selected screen number
   var isLoading = false.obs;
-  final List<Widget> pages = ([
+  final List<Widget> pages = [
     const KitchenScreen(),
     const RecipeScreen(),
     const PlannerScreen(),
     const DiningScreen(),
     const ProfileScreen(),
-  ]);
+  ];
 
   final AuthApi auth = AuthApi();
 
