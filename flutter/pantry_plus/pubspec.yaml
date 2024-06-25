@@ -43,7 +43,7 @@ dependencies:
   firebase_auth: ^4.16.0
   firebase_core: ^2.24.2
   flutter_speed_dial: ^7.0.0
-  mobile_scanner: ^4.0.0
+  mobile_scanner: ^5.0.1
   http: ^1.2.0
   html: ^0.15.4
   flutter_image_compress: ^2.1.0
@@ -56,11 +56,14 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   firebase_storage: ^11.6.0
   firebase_app_check: ^0.2.1+8
-  image_picker: ^1.0.7
-  tflite_flutter: ^0.10.4
-  image: ^4.1.7
   flutter_gemini: ^2.0.3
   omni_datetime_picker: ^1.0.9
+  flutter_staggered_grid_view: ^0.7.0
+  filter_list: ^1.0.2
+  table_calendar: ^3.1.1
+  camera: ^0.10.5+9
+  image_picker: ^1.1.0
+  smooth_page_indicator: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -93,19 +96,10 @@ flutter:
     - assets/images/profile.jpeg
     - assets/images/gallery.png
     - assets/images/camera.png
+    - assets/images/dum_image.jpg
     - assets/keys/secret.json
 
-    # dummy
-    - assets/recipe_images/asparagus.jpg
-    - assets/recipe_images/burger.jpg
-    - assets/recipe_images/indian-food.jpg
-    - assets/recipe_images/pancake.jpg
-    - assets/recipe_images/pastry.jpg
-    - assets/recipe_images/schnitzel.jpg
-    - assets/recipe_images/smoked-salmon-salad.jpg
-    - assets/recipe_images/souffle.jpg
-    - assets/recipe_images/spaghetti.jpg
-    - assets/recipe_images/toast.jpg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

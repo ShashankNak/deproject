@@ -1,26 +1,51 @@
 {
   "project_info": {
-    "project_number": "578736755425",
-    "project_id": "pantry-plus-deproject",
-    "storage_bucket": "pantry-plus-deproject.appspot.com"
+    "project_number": "1024684010697",
+    "project_id": "pantry-plus-6fa85",
+    "storage_bucket": "pantry-plus-6fa85.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:578736755425:android:fae56ed249676ac2941da0",
+        "mobilesdk_app_id": "1:1024684010697:android:6d6d8539a8076aea9a3118",
         "android_client_info": {
           "package_name": "com.example.pantry_plus"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1024684010697-rbft2d967fatetpsvu6mv5s4j8go5e4l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pantry_plus",
+            "certificate_hash": "162513802f887b845194ab456d88c301394351ef"
+          }
+        },
+        {
+          "client_id": "1024684010697-hsgincf9s25nu4dq9jc2i460os884bek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBjjp3CZJtyfURoYyuCzJtHhqM55xhtzjs"
+          "current_key": "AIzaSyBYxqC2PhqJAwOT7uz93ErVYssFZwTk_F8"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024684010697-hsgincf9s25nu4dq9jc2i460os884bek.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1024684010697-cisjj9b619cokpu2dgaleac410jgfre2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pantryPlus"
+              }
+            }
+          ]
         }
       }
     }

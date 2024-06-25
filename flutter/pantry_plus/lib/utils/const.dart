@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pantry_plus/data/model/item_model.dart';
 
 const String gallery = 'assets/images/gallery.png';
 const String camera = 'assets/images/camera.png';
@@ -30,4 +31,44 @@ Widget customLoadingIndicator() {
       child: const Center(
         child: CircularProgressIndicator(),
       ));
+}
+
+String convertQuantityToString(Quantity quantity) {
+  switch (quantity) {
+    case Quantity.gm:
+      return "gm";
+    case Quantity.kg:
+      return "Kg";
+    case Quantity.dozen:
+      return "dozen";
+    case Quantity.l:
+      return "L";
+    case Quantity.ml:
+      return "ml";
+  }
+}
+
+String convertCategoryToString(Category category) {
+  switch (category) {
+    case Category.bakery:
+      return "Bakery";
+    case Category.beverages:
+      return "Beverages";
+    case Category.dairy:
+      return "Dairy";
+    case Category.fruits_vegetables:
+      return "Fruits & Vegetables";
+    case Category.meat:
+      return "Meat";
+    case Category.grain_pulses:
+      return "Grains & Pulses";
+    case Category.snacks:
+      return "Snacks";
+    case Category.spices:
+      return "Spices";
+    case Category.other:
+      return "Other";
+    case Category.dryFruits:
+      return "Dry Fruits";
+  }
 }

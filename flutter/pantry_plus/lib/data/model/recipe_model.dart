@@ -1,60 +1,108 @@
-class RecipeModel {
-  late String recipeId;
-  late String recipeName;
-  late String recipeImage;
-  late List<String> recipeCategory;
-  late List<String> recipeIngredients;
-  late List<String> recipeInstructions;
-  late String recipeTime;
-  late bool isGlutenFree;
-  late bool isVegan;
-  late bool isVegetarian;
-  late bool isLactoseFree;
-  late bool isJain;
+// ignore_for_file: constant_identifier_names
 
-  RecipeModel(
-      {required this.recipeId,
-      required this.recipeName,
-      required this.recipeImage,
-      required this.recipeCategory,
-      required this.recipeIngredients,
-      required this.recipeInstructions,
-      required this.recipeTime,
-      required this.isGlutenFree,
-      required this.isVegan,
-      required this.isVegetarian,
-      required this.isLactoseFree,
-      required this.isJain});
+enum Complexity {
+  Simple,
+  Challenging,
+  Hard,
+}
 
-  RecipeModel.fromJson(Map<String, dynamic> json) {
-    recipeId = json['recipeId'];
-    recipeName = json['recipeName'];
-    recipeImage = json['recipeImage'];
-    recipeCategory = json['recipeCategory'].split("<->");
-    recipeIngredients = json['recipeIngredients'].split("<->");
-    recipeInstructions = json['recipeInstructions'].split("<->");
-    recipeTime = json['recipeTime'];
-    isGlutenFree = json['isGlutenFree'] == '1' ? true : false;
-    isVegan = json['isVegan'] == '1' ? true : false;
-    isVegetarian = json['isVegetarian'] == '1' ? true : false;
-    isLactoseFree = json['isLactoseFree'] == '1' ? true : false;
-    isJain = json['isJain'] == '1' ? true : false;
+enum Affordability {
+  Affordable,
+  Pricey,
+  Luxurious,
+}
+
+enum FoodType {
+  vegetarian,
+  nonVegetarian,
+  glutenFree,
+  lactoseFree,
+  indian,
+  jain,
+  vegan
+}
+
+String getRecipeCategory(FoodType category) {
+  switch (category) {
+    case FoodType.vegetarian:
+      return 'vegetarian';
+    case FoodType.nonVegetarian:
+      return 'non-vegetarian';
+    case FoodType.glutenFree:
+      return 'gluten-free';
+    case FoodType.indian:
+      return 'indian';
+    case FoodType.lactoseFree:
+      return 'lactose-free';
+    case FoodType.jain:
+      return 'jain';
+    case FoodType.vegan:
+      return 'vegan';
   }
+}
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['recipeId'] = recipeId;
-    data['recipeName'] = recipeName;
-    data['recipeImage'] = recipeImage;
-    data['recipeCategory'] = recipeCategory.join("<->");
-    data['recipeIngredients'] = recipeIngredients.join("<->");
-    data['recipeInstructions'] = recipeInstructions.join("<->");
-    data['recipeTime'] = recipeTime;
-    data['isGlutenFree'] = isGlutenFree ? '1' : '0';
-    data['isVegan'] = isVegan ? '1' : '0';
-    data['isVegetarian'] = isVegetarian ? '1' : '0';
-    data['isLactoseFree'] = isLactoseFree ? '1' : '0';
-    data['isJain'] = isJain ? '1' : '0';
-    return data;
+FoodType getRecipeCategoryEnum(String text) {
+  switch (text) {
+    case 'vegetarian':
+      return FoodType.vegetarian;
+    case 'non-vegetarian':
+      return FoodType.nonVegetarian;
+    case 'gluten-free':
+      return FoodType.glutenFree;
+    case 'lactose-free':
+      return FoodType.lactoseFree;
+    case 'jain':
+      return FoodType.jain;
+    case 'vegan':
+      return FoodType.vegan;
+    default:
+      return FoodType.vegetarian;
+  }
+}
+
+class Recipe {
+  final String id;
+  final String title;
+  final List<String> directions;
+  final String imgUrl;
+  final String duration;
+  final List<String> meals;
+  final List<String> foodType;
+  final List<String> ingredients;
+  final Complexity complexity;
+  final Affordability affordability;
+
+  Recipe({
+    required this.id,
+    required this.duration,
+    required this.complexity,
+    required this.affordability,
+    required this.title,
+    required this.directions,
+    required this.imgUrl,
+    required this.meals,
+    required this.foodType,
+    required this.ingredients,
+  });
+
+  //JSON TO Recipe Object
+  factory Recipe.fromJson(Map<String, dynamic> json) {
+    return Recipe(
+      title: json['title'],
+      directions: List<String>.from(json['directions']),
+      imgUrl: json['imgUrl'],
+      duration: json['duration'],
+      meals: List<String>.from(json['meals']),
+      foodType: List<String>.from(json['foodType']),
+      ingredients: List<String>.from(json['ingredients']),
+      complexity: Complexity.values.firstWhere(
+        (element) => element.toString() == 'Complexity.${json['complexity']}',
+      ),
+      affordability: Affordability.values.firstWhere(
+        (element) =>
+            element.toString() == 'Affordability.${json['affordability']}',
+      ),
+      id: json['id'],
+    );
   }
 }

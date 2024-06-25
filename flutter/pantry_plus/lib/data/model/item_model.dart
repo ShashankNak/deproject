@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-enum Quantity { gm, ml, kg, l, dozen, pieces }
+enum Quantity { gm, ml, kg, l, dozen }
 
 enum Category {
   fruits_vegetables,
@@ -11,6 +11,7 @@ enum Category {
   snacks,
   grain_pulses,
   spices,
+  dryFruits,
   other
 }
 
@@ -21,7 +22,6 @@ class ItemModel {
   late List<String> itemKeywords;
   late String itemImage;
   late Category itemCategory;
-  late String quantity;
   late Quantity quantityType;
   late String expiryDate;
 
@@ -32,20 +32,18 @@ class ItemModel {
       required this.itemKeywords,
       required this.itemImage,
       required this.itemCategory,
-      required this.quantity,
       required this.quantityType,
       required this.expiryDate});
 
   ItemModel.fromJson(Map<String, dynamic> json) {
-    itemId = json['itemId'];
-    itemName = json['itemName'];
-    description = json['description'];
-    itemKeywords = json['itemKeywords'].split(" ");
-    itemImage = json['itemImage'];
+    itemId = json['itemId'] ?? "";
+    itemName = json['itemName'] ?? "";
+    description = json['description'] ?? "";
+    itemKeywords = json['itemKeywords'].split(",") ?? [];
+    itemImage = json['itemImage'] ?? "";
     itemCategory = _categoryFromJson(json);
-    quantity = json['quantity'];
     quantityType = _quantityTypeFromJson(json);
-    expiryDate = json['expiryDate'];
+    expiryDate = json['expiryDate'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -56,7 +54,6 @@ class ItemModel {
       'itemKeywords': itemKeywords.join(" "),
       'itemImage': itemImage,
       'itemCategory': itemCategory.toString().split(".").last,
-      'quantity': quantity,
       'quantityType': quantityType.toString().split(".").last,
       'expiryDate': expiryDate,
     };
@@ -79,7 +76,9 @@ class ItemModel {
                                 ? Category.spices
                                 : json['itemCategory'] == "grain_pulses"
                                     ? Category.grain_pulses
-                                    : Category.other;
+                                    : json['itemCategory'] == "dryFruits"
+                                        ? Category.dryFruits
+                                        : Category.other;
   }
 
   Quantity _quantityTypeFromJson(Map<String, dynamic> json) {
@@ -91,8 +90,6 @@ class ItemModel {
                 ? Quantity.kg
                 : json['quantityType'] == "l"
                     ? Quantity.l
-                    : json['quantityType'] == "dozen"
-                        ? Quantity.dozen
-                        : Quantity.pieces;
+                    : Quantity.dozen;
   }
 }

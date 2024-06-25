@@ -1,16 +1,24 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:pantry_plus/data/model/user_selected_ingredients_model.dart';
+import 'package:pantry_plus/utils/const.dart';
 
+import '../../../../api/firebase/firebase_database.dart';
+import '../../../../api/firebase/inventory_database.dart';
 import '../../../../data/model/item_model.dart';
 
 class NewItemController extends GetxController {
   var isLoading = false.obs;
   var dateController = TextEditingController().obs;
+  var quantityController = TextEditingController().obs;
   final formkey = GlobalKey<FormState>();
+  var storedImg = "".obs;
 
   var newItem = ItemModel(
     itemId: "",
@@ -19,7 +27,6 @@ class NewItemController extends GetxController {
     itemKeywords: [],
     itemImage: "",
     itemCategory: Category.fruits_vegetables,
-    quantity: "",
     quantityType: Quantity.kg,
     expiryDate: "",
   ).obs;
@@ -66,6 +73,7 @@ class NewItemController extends GetxController {
 
   void getNewItemImage() async {
     final img = await showBottomSheetForImage();
+    storedImg(img);
     newItem.update((val) {
       val!.itemImage = img;
     });
@@ -75,7 +83,7 @@ class NewItemController extends GetxController {
   List<Widget> tabs = List.generate(
       Category.values.length,
       (index) => Tab(
-            text: Category.values[index].toString().split(".").last.capitalize!,
+            text: convertCategoryToString(Category.values[index]),
           ));
 
   //for picking and compressing image
@@ -136,14 +144,65 @@ class NewItemController extends GetxController {
     if (!isValid) {
       return;
     }
-    newItem.update((val) {
-      val!.itemId = DateTime.now().millisecondsSinceEpoch.toString();
-    });
     Get.focusScope!.unfocus();
     formkey.currentState!.save();
     log(newItem.toJson().toString());
-    Get.back();
-    Get.snackbar(newItem.value.itemName, "Added to your Inventory!",
-        snackPosition: SnackPosition.BOTTOM);
+
+    isLoading(true);
+    update();
+
+    try {
+      final id = DateTime.now().millisecondsSinceEpoch.toString();
+
+      uploadImageToFB(newItem.value.itemImage, id).then((value) async {
+        newItem.update((val) async {
+          val!.itemImage = value;
+          val.itemId = id;
+        });
+        update();
+
+        UserSelectedIngredientsModel userSelectedIngredientsModel =
+            UserSelectedIngredientsModel(
+          itemModel: newItem.value,
+          quantity: quantityController.value.text.trim(),
+          expiryDate: newItem.value.expiryDate,
+        );
+
+        await InventoryDatabase.storeInventory(userSelectedIngredientsModel);
+        Get.back();
+
+        Get.snackbar(newItem.value.itemName, "Added to your Inventory!",
+            snackPosition: SnackPosition.BOTTOM);
+        isLoading(false);
+        update();
+      });
+    } catch (e) {
+      isLoading(false);
+      update();
+      Get.snackbar("Something went wrong", "while uploading to Database!",
+          snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+  }
+
+  Future<String> uploadImageToFB(String path, String id) async {
+    final ext = path.split(".").last;
+
+    final ref = FirebaseDatabase.storage.ref().child(
+        'userIngredients/${FirebaseDatabase.firebaseAuth.currentUser!.uid}/$id.$ext');
+    try {
+      //storage file in ref with path
+      //uploading image
+      log("message..........");
+      final uploadTask =
+          ref.putFile(File(path), SettableMetadata(contentType: 'image/$ext'));
+      final snapshot = await uploadTask.whenComplete(() {});
+      final img = await snapshot.ref.getDownloadURL();
+      log(img);
+      return img;
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
   }
 }

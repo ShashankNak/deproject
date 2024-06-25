@@ -7,7 +7,8 @@ class GeminiApi {
     try {
       final gemini = Gemini.instance;
       final value = await gemini.textAndImage(
-          text: "Just give me the name of the object in this image.",
+          text:
+              "Just give me the name of the object in this image in this format: {'image': [image]}",
           images: [File(img).readAsBytesSync()],
           modelName: "models/gemini-pro-vision");
       if (value != null && value.output != null) {

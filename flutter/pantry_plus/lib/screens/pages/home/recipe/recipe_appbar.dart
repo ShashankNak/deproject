@@ -8,16 +8,8 @@ class RecipeAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Get.theme.colorScheme.primary,
-      title: const Text('Recipe'),
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.search),
-          tooltip: 'search for Items',
-          onPressed: () {
-            // handle the press
-          },
-        ),
-      ],
+      title: const Text('Recipes'),
+      centerTitle: true,
     );
   }
 }

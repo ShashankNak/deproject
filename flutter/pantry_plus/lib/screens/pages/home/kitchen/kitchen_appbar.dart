@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pantry_plus/data/model/item_model.dart';
 import 'package:pantry_plus/screens/pages/start_screen/start_screen.dart';
 
 import '../../../../controller/home/kitchen/kitchen_controller.dart';
+import 'search/search_screen.dart';
 
 class KitchenAppbar extends StatefulWidget {
   const KitchenAppbar({super.key});
@@ -39,6 +41,8 @@ class _KitchenAppbarState extends State<KitchenAppbar>
                   tooltip: 'search for Items',
                   onPressed: () {
                     // handle the press
+                    Get.to(() => const SearchIngredients(),
+                        transition: Transition.fadeIn);
                   },
                 ),
                 IconButton(
@@ -69,6 +73,10 @@ class _KitchenAppbarState extends State<KitchenAppbar>
                 labelStyle: Get.theme.textTheme.titleLarge,
                 unselectedLabelColor: Get.theme.colorScheme.onBackground,
                 controller: _tabController,
+                onTap: (value) {
+                  controller.selectedCategory(Category.values[value]);
+                  controller.update();
+                },
                 tabs: controller.tabs,
               ),
             ),
