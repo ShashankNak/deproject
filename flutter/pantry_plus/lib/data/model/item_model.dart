@@ -92,4 +92,30 @@ class ItemModel {
                     ? Quantity.l
                     : Quantity.dozen;
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ItemModel &&
+        other.itemId == itemId &&
+        other.itemName == itemName &&
+        other.description == description &&
+        other.itemKeywords == itemKeywords &&
+        other.itemImage == itemImage &&
+        other.itemCategory == itemCategory &&
+        other.quantityType == quantityType &&
+        other.expiryDate == expiryDate;
+  }
+
+  @override
+  int get hashCode =>
+      itemId.hashCode ^
+      itemName.hashCode ^
+      description.hashCode ^
+      itemKeywords.hashCode ^
+      itemImage.hashCode ^
+      itemCategory.hashCode ^
+      quantityType.hashCode ^
+      expiryDate.hashCode;
 }

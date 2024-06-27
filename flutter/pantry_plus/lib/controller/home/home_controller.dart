@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:get/get.dart';
 import 'package:pantry_plus/api/authapi/auth_api.dart';
 import 'package:pantry_plus/controller/home/kitchen/kitchen_controller.dart';
@@ -17,6 +18,7 @@ import 'package:http/http.dart' as http;
 
 import '../../data/model/item_model.dart';
 import 'planner/meal_planner_controller.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomeController extends GetxController {
   var selectedPage = (0).obs; //selected screen number
@@ -28,6 +30,8 @@ class HomeController extends GetxController {
     const DiningScreen(),
     const ProfileScreen(),
   ];
+  late Rx<MapController> mapCont;
+
   final AuthApi auth = AuthApi();
   late Rx<DateTime> mealPlanDate;
   var onMealPlan = false.obs;
@@ -37,11 +41,56 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    isLoading(true);
+    update();
     readRecipeFile();
     readIngredientsFile();
+    mapCont = MapController(
+      initMapWithUserPosition:
+          const UserTrackingOption(enableTracking: true, unFollowUser: false),
+    ).obs;
+    isLoading(false);
+    update();
     mealPlanDate = DateTime(DateTime.now().year, DateTime.now().month,
             DateTime.now().day, 0, 0, 0, 0, 0)
         .obs;
+  }
+
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
   }
 
   Future<List<dynamic>> readJson(String path, String type) async {

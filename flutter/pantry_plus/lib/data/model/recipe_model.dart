@@ -105,4 +105,33 @@ class Recipe {
       id: json['id'],
     );
   }
+
+  //generate hashcode and equals for Recipe object
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Recipe &&
+        other.title == title &&
+        other.directions == directions &&
+        other.imgUrl == imgUrl &&
+        other.duration == duration &&
+        other.meals == meals &&
+        other.foodType == foodType &&
+        other.ingredients == ingredients &&
+        other.complexity == complexity &&
+        other.affordability == affordability;
+  }
+
+  @override
+  int get hashCode =>
+      title.hashCode ^
+      directions.hashCode ^
+      imgUrl.hashCode ^
+      duration.hashCode ^
+      meals.hashCode ^
+      foodType.hashCode ^
+      ingredients.hashCode ^
+      complexity.hashCode ^
+      affordability.hashCode;
 }

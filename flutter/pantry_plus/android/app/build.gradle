@@ -1,7 +1,7 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin"
+    id "dev.flutter.flutter-gradle-plugin" 
 }
 
 def localProperties = new Properties()
@@ -59,11 +59,10 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-
-    aaptOptions {
-        noCompress 'tflite'
+    androidResources {
         noCompress 'lite'
     }
+
 }
 
 flutter {

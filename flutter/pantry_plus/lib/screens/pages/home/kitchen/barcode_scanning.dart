@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pantry_plus/controller/home/kitchen/kitchen_controller.dart';
+import 'package:pantry_plus/screens/pages/home/kitchen/components/barcode_scanner/container_with_hole.dart';
 
 class BarCodeScanning extends StatefulWidget {
   const BarCodeScanning({super.key});
@@ -142,25 +143,8 @@ class _BarCodeScanningState extends State<BarCodeScanning>
                   height: Get.size.height / 4),
             ),
           ),
-          Center(
-              child: SizedBox(
-            height: Get.size.height / 4,
-            width: Get.size.width / 1.5,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.red, width: 2.0),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-          ))
+          const ContainerWithHole()
         ],
-      ),
-      floatingActionButton: Positioned(
-        bottom: Get.size.height / 30,
-        right: Get.size.width / 30,
-        child: FloatingActionButton(
-            onPressed: () {},
-            child: const Icon(Icons.photo_size_select_actual)),
       ),
     );
   }

@@ -72,3 +72,38 @@ String convertCategoryToString(Category category) {
       return "Dry Fruits";
   }
 }
+
+bool isNumeric(String s) {
+  return double.tryParse(s) != null;
+}
+
+bool isStopWord(String s) {
+  return s == "and" ||
+      s == "or" ||
+      s == "the" ||
+      s == "a" ||
+      s == "an" ||
+      s == "of" ||
+      s == "any" ||
+      s == "some" ||
+      s == "all" ||
+      s == "each" ||
+      s == "every" ||
+      s == "this" ||
+      s == "that" ||
+      s == "these" ||
+      s == "those" ||
+      s == "my" ||
+      s == "your" ||
+      s == "his" ||
+      s == "her" ||
+      s == "its" ||
+      s == "our" ||
+      s == "their" ||
+      s == "whose" ||
+      s == "whom" ||
+      s == "which" ||
+      s == "gms" ||
+      s == "kgs" ||
+      s == "with";
+}

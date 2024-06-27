@@ -9,6 +9,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pantry_plus/api/firebase/inventory_database.dart';
 import 'package:pantry_plus/api/gemini/key.dart';
 import 'package:pantry_plus/api/web_crawler.dart';
+import 'package:pantry_plus/controller/home/home_controller.dart';
 import 'package:pantry_plus/data/model/item_model.dart';
 import 'package:pantry_plus/data/model/user_selected_ingredients_model.dart';
 import 'package:pantry_plus/screens/pages/home/kitchen/components/model_generated_card.dart';
@@ -18,17 +19,21 @@ import '../../../api/gemini/gemini_api.dart';
 
 class KitchenController extends GetxController {
   var result = ("").obs;
-  RxList<String> titles = <String>[].obs;
+  var titles = <String>[].obs;
   var isLoading = false.obs;
   var selectedCategory = Category.fruits_vegetables.obs;
+  var generatedData = <ItemModel>[].obs;
 
   RxList<UserSelectedIngredientsModel> inventory =
       <UserSelectedIngredientsModel>[].obs;
+  var ingredients = <ItemModel>[].obs;
+  var hCont = Get.find<HomeController>();
 
   @override
   void onInit() {
     super.onInit();
     log("auth: ${FirebaseAuth.instance.currentUser!.uid}");
+    ingredients = hCont.ingredients;
     setApiKey();
   }
 
@@ -52,8 +57,10 @@ class KitchenController extends GetxController {
   void openBarcodeScanner(BarcodeCapture capture) async {
     final List<Barcode> barcodes = capture.barcodes;
 
+    titles.clear();
     isLoading(true);
     update();
+
     // final Uint8List? image = capture.image;
     for (final barcode in barcodes) {
       log("Barcode: ${barcode.rawValue}");
@@ -63,12 +70,57 @@ class KitchenController extends GetxController {
         await WebCrawler.getProductDetail(result.value).then((value) {
           titles(value);
           update();
+
+          generatedDataPreProcess();
+          Get.off(() => const ModelGeneratedScreen());
+
+          update();
           isLoading(false);
           update();
-          Get.off(() => const ModelGeneratedScreen());
         });
       }
     }
+  }
+
+  void generatedDataPreProcess() {
+    generatedData.clear();
+    update();
+    log("title: $titles");
+    if (titles.isEmpty) {
+      return;
+    }
+
+    if (titles.length == 1) {
+      final data = titles[0].split("'")[1].toString();
+      generatedData.addAll(
+          ingredients.where((p0) => p0.itemName.toLowerCase().contains(data)));
+      generatedData.addAll(ingredients.where(
+          (element) => element.description.toLowerCase().contains(data)));
+      generatedData.addAll(ingredients.where(
+          (p0) => p0.itemKeywords.join(" ").toLowerCase().contains(data)));
+      log(generatedData.length.toString());
+      update();
+    } else {
+      for (final item in titles) {
+        final words = item.split(" ");
+        for (final word in words) {
+          if (word.length < 3 || isNumeric(word) || isStopWord(word)) {
+            continue;
+          }
+
+          generatedData.addAll(ingredients.where(
+              (p0) => p0.itemName.toLowerCase().contains(word.toLowerCase())));
+          generatedData.addAll(ingredients.where((element) =>
+              element.description.toLowerCase().contains(word.toLowerCase())));
+          generatedData.addAll(ingredients.where((p0) => p0.itemKeywords
+              .join(" ")
+              .toLowerCase()
+              .contains(word.toLowerCase())));
+        }
+      }
+    }
+    generatedData = generatedData.toSet().toList().obs;
+    update();
   }
 
   void setCategory(Category category) {
@@ -134,16 +186,24 @@ class KitchenController extends GetxController {
     final img = await showBottomSheetForImage();
     String value = "";
     Get.to(() => const ModelGeneratedScreen());
+    titles.clear();
+    update();
     isLoading(true);
     update();
 
     //calling api of gemini for image recognition
     value = await GeminiApi.getGeminiResponse(img);
-
-    isLoading(false);
+    var data = "";
+    try {
+      data = value.split("[")[1].split("]")[0];
+    } catch (e) {
+      // text: " {'image': 'kiwi'}"
+      data = value.split(":")[1].split("}")[0];
+    }
+    titles(data.split(" "));
+    generatedDataPreProcess();
     update();
-    log(value);
-    titles([value]);
+    isLoading(false);
     update();
   }
 
