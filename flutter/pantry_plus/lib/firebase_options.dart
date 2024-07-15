@@ -49,20 +49,21 @@ class DefaultFirebaseOptions {
     }
   }
 
+  // android / ios / web keys:
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBYxqC2PhqJAwOT7uz93ErVYssFZwTk_F8',
-    appId: '1:1024684010697:android:6d6d8539a8076aea9a3118',
-    messagingSenderId: '1024684010697',
-    projectId: 'pantry-plus-6fa85',
-    storageBucket: 'pantry-plus-6fa85.appspot.com',
+    apiKey: '',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    storageBucket: '',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBEWrKATFZF5a84wlxrq6vf0v8gT6g8F-k',
-    appId: '1:1024684010697:ios:7c549a6116b11bd29a3118',
-    messagingSenderId: '1024684010697',
-    projectId: 'pantry-plus-6fa85',
-    storageBucket: 'pantry-plus-6fa85.appspot.com',
-    iosBundleId: 'com.example.pantryPlus',
+    apiKey: '',
+    appId: '',
+    messagingSenderId: '',
+    projectId: '',
+    storageBucket: '',
+    iosBundleId: '',
   );
 }

@@ -16,8 +16,6 @@ migrate_working_dir/
 *.iws
 .idea/
 
-lib/firebase_options.dart
-
 
 # api key
 assets/keys
