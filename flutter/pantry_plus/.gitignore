@@ -17,6 +17,8 @@ migrate_working_dir/
 .idea/
 
 lib/firebase_options.dart
+
+lib/firebase_options.dart
 # api key
 assets/keys
 # The .vscode folder contains launch configuration and tasks you configure in
